@@ -23,11 +23,8 @@ pkgTest <- function(pkg){
   sapply(pkg,  require,  character.only = TRUE)
 }
 
-# here is where you load any necessary packages
-# ex: stringr
-# lapply(c("stringr"),  pkgTest)
-
-lapply(c(),  pkgTest)
+library(tidyverse)
+library(corrplot)
 
 #####################
 # Problem 1
@@ -71,9 +68,7 @@ ci_90_upper
 
 # Question 1.2
 
-# H0: country mean (mean_country = 100) is greater than or equal to 
-# sample mean (mean_y)
-
+# H0: country mean (mean_country = 100) >= sample mean (mean_y)
 # HA: country mean (mean_country = 100) < sample mean (mean_y) 
 
 test_statistic <- (mean_y - 100)/se_y
@@ -88,7 +83,7 @@ pt(abs(test_statistic), df = 24, lower.tail = FALSE)
 #####################
 # Problem 2
 #####################
-library(tidyverse)
+
 expenditure <- read.table("https://raw.githubusercontent.com/ASDS-TCD/StatsI_2025/main/datasets/expenditure.txt", header=T)
 
 ################ - Data Vis - #######################
@@ -148,10 +143,10 @@ head(cor_expenditure)
 str(cor_expenditure)
 class(cor_expenditure)
 
-install.packages("corrplot")
 library(corrplot)
 ?corrplot
 corrplot(cor_expenditure, method = "pie")
+dev.off()
 
 ################ - Question 2.2 - #######################
 
@@ -223,7 +218,7 @@ ggplot(regional_averages, aes(x = reorder(factor(Region), -Y),
                               "2" = "North Central",
                               "3" = "South",
                               "4" = "West"))
-
+dev.off()
 
 ################ - Question 2.3 - #######################
 
@@ -249,7 +244,7 @@ ggplot(expenditure, aes(x = X1,
                         y = Y,
                         color = factor(Region))) +
   geom_point(size = 2) +
-  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  geom_smooth(method = "lm", se = FALSE, color = "seagreen") +
   scale_color_manual(values = c("red", "purple", "lightgreen", "blue"),
                      labels = c("1" = "Northeast",
                                 "2" = "North Central",
@@ -291,3 +286,4 @@ ggplot(expenditure, aes(x = X1,
        shape = "Region") +
   guides(color = guide_legend("Region"),
          shape = guide_legend("Region"))
+dev.off()
