@@ -76,9 +76,9 @@ test_statistic
 
 # t value for one sided test is 1.711
 
-pt(abs(test_statistic), df = 24, lower.tail = FALSE)
+pt(abs(test_statistic), df = 24, lower.tail = TRUE)
 
-# fail to reject the null hypothesis, as pt = 0.28 > alpha (0.05)
+# fail to reject the null hypothesis, as pt = 0.72 > alpha (0.05)
 
 #####################
 # Problem 2
