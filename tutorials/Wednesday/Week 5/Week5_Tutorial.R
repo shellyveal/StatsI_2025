@@ -30,7 +30,7 @@ pkgTest <- function(pkg){
 }
 
 # Load any necessary packages
-lapply(c("readr", "ggplot2"),  pkgTest)
+lapply(c("readr", "tidyverse"),  pkgTest)
 
 # Get working directory
 getwd()
@@ -292,3 +292,5 @@ ggplot() +
     y = "Monthly Net Income (in Euro)"
   ) +
   theme_minimal()
+
+?rnorm

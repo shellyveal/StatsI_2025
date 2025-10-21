@@ -61,26 +61,19 @@
 \newtheorem{hyp}{Hypothesis}
 
 \title{Problem Set 2}
-\date{Due: October 23, 2025}
-\author{Applied Stats/Quant Methods 1}
+\date{October 23, 2025}
+\author{Applied Stats/Quant Methods 1\\
+	Shelly Veal-Upham\\
+	25337422}
 
 \begin{document}
 	\maketitle
-	\section*{Instructions}
-\begin{itemize}
-	\item Please show your work! You may lose points by simply writing in the answer. If the problem requires you to execute commands in \texttt{R}, please include the code you used to get your answers. Please also include the \texttt{.R} file that contains your code. If you are not sure if work needs to be shown for a particular problem, please ask.
-	\item Your homework should be submitted electronically on GitHub.
-	\item This problem set is due before 23:59 on Thursday October 23, 2025. No late assignments will be accepted.
 
-\end{itemize}
-
-	
 	\vspace{.5cm}
 	\section*{Question 1: Political Science}
 		\vspace{.25cm}
-	The following table was created using the data from a study run in a major Latin American city.\footnote{Fried, Lagunes, and Venkataramani (2010). ``Corruption and Inequality at the Crossroad: A Multimethod Study of Bribery and Discrimination in Latin America. \textit{Latin American Research Review}. 45 (1): 76-97.} As part of the experimental treatment in the study, one employee of the research team was chosen to make illegal left turns across traffic to draw the attention of the police officers on shift. Two employee drivers were upper class, two were lower class drivers, and the identity of the driver was randomly assigned per encounter. The researchers were interested in whether officers were more or less likely to solicit a bribe from drivers depending on their class (officers use phrases like, ``We can solve this the easy way'' to draw a bribe). The table below shows the resulting data.
+	The following table was created using the data from a study run in a major Latin American city.\footnote{Fried, Lagunes, and Venkataramani (2010). ``Corruption and Inequality at the Crossroad: A Multimethod Study of Bribery and Discrimination in Latin America. \textit{Latin American Research Review}. 45 (1): 76-97.} As part of the experimental treatment in the study, one employee of the research team was chosen to make illegal left turns across traffic to draw the attention of the police officers on shift. Two employee drivers were upper class, two were lower class drivers, and the identity of the driver was randomly assigned per encounter. The researchers were interested in whether officers were more or less likely to solicit a bribe from drivers depending on their class (officers use phrases like, ``We can solve this the easy way'' to draw a bribe). The table below shows the resulting data.\\
 
-\newpage
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{l | c c c }
@@ -97,14 +90,22 @@
 	
 	\item [(a)]
 	Calculate the $\chi^2$ test statistic by hand/manually (even better if you can do "by hand" in \texttt{R}).\\
-	\vspace{7cm}
-	
+\newpage
+
+	First, I recreated the above table in R:\\
+		\lstinputlisting[language=R, firstline=39, lastline=44]{PS02_SVU.R} 
+	Then, created vectors of the expected values and used them to calculate the $\chi^2$ test statistic. To ensure this calculation is correct, I compared it to the $\chi^2$ test statistic from the \texttt{chisq.test()} in R-- both yield a value of \textbf{3.79}.\\
+		\lstinputlisting[language=R, firstline=73, lastline=78]{PS02_SVU.R}  
+		
 	\item [(b)]
-	Now calculate the p-value from the test statistic you just created (in \texttt{R}).\footnote{Remember frequency should be $>$ 5 for all cells, but let's calculate the p-value here anyway.}  What do you conclude if $\alpha = 0.1$?\\
+	Now calculate the p-value from the test statistic you just created (in \texttt{R}).  What do you conclude if $\alpha = 0.1$?\\
+	\vspace{.1cm}
 	
-	\newpage
+	Using \texttt{pchisq()} we can easily find that the p-value equals \textbf{0.1502}. At $\alpha = 0.1$, we cannot reject the null hypothesis and thus conclude that there may indeed be no statistical association between the two categorical variables (class and traffic stop outcome).\\
+		\lstinputlisting[language=R, firstline=82, lastline=82]{PS02_SVU.R}  
+		
 	\item [(c)] Calculate the standardized residuals for each cell and put them in the table below.
-	\vspace{1cm}
+	\vspace{.1cm}
 	
 	\begin{table}[h]
 		\centering
@@ -112,97 +113,65 @@
 			& Not Stopped & Bribe requested & Stopped/given warning \\
 			\\[-1.8ex] 
 			\hline \\[-1.8ex]
-			Upper class  &  &  &  \\
+			Upper class  & 0.136 & -0.815 & 0.819 \\
 			\\
-			Lower class &  &   &   \\
+			Lower class & -0.183 & 1.094 & -1.099  \\
 			
 		\end{tabular}
 	\end{table}
+	\vspace{.1cm}
 	
+	I created this table by developing a numerator ("num") vector of observed - expected values and dividing by the square root of expected values, given formula  \(res=\frac{(f_{o}-f_{e})}{\sqrt{f_{e}}}\) and checked the results against the \texttt{chisq.test()} results.
+		\lstinputlisting[language=R, firstline=108, lastline=109]{PS02_SVU.R}  
 	
-	\vspace{7cm}
-	\item [(d)] How might the standardized residuals help you interpret the results?  
+	\vspace{.1cm}
+	\item [(d)] How might the standardized residuals help you interpret the results? \\
+	\vspace{.1cm}
+	
+	Standardizing the residuals allows us to compare them to critical values (z-scores) on the standard normal distribution to see whether they show signficance in the association between the two variables. For a significance level of  $\alpha = 0.1$ the critical value of z in a two-tailed test is $z = \pm 1.645$. None of (the absolute value of) our standardized residuals are above 1.645, signaling a lack of signficance in association between the two categorical variables.\\
 	
 \end{enumerate}
+
 \newpage
 
 \section*{Question 2: Economics}
 Chattopadhyay and Duflo were interested in whether women promote different policies than men.\footnote{Chattopadhyay and Duflo. (2004). ``Women as Policy Makers: Evidence from a Randomized Policy Experiment in India. \textit{Econometrica}. 72 (5), 1409-1443.} Answering this question with observational data is pretty difficult due to potential confounding problems (e.g. the districts that choose female politicians are likely to systematically differ in other aspects too). Hence, they exploit a randomized policy experiment in India, where since the mid-1990s, $\frac{1}{3}$ of village council heads have been randomly reserved for women. A subset of the data from West Bengal can be found at the following link: \url{https://raw.githubusercontent.com/kosukeimai/qss/master/PREDICTION/women.csv}\\
 
 \noindent Each observation in the data set represents a village and there are two villages associated with one GP (i.e. a level of government is called "GP"). Figure~\ref{fig:women_desc} below shows the names and descriptions of the variables in the dataset. The authors hypothesize that female politicians are more likely to support policies female voters want. Researchers found that more women complain about the quality of drinking water than men. You need to estimate the effect of the reservation policy on the number of new or repaired drinking water facilities in the villages.
-\vspace{.5cm}
+\vspace{.1cm}
 \begin{figure}[h!]
 	\caption{\footnotesize{Names and description of variables from Chattopadhyay and Duflo (2004).}}
 	\vspace{.5cm}
 	\centering
 	\label{fig:women_desc}
-	\includegraphics[width=1.1\textwidth]{../../../../graphics/women_desc.png}
+	\includegraphics[width=1.1\textwidth]{women_desc.png}
 \end{figure}		
 
 \newpage
 \begin{enumerate}
-	\item [(a)] State a null and alternative (two-tailed) hypothesis. 
+	\item [(a)] State a null and alternative (two-tailed) hypothesis. \\
+	\vspace{.2cm}
 	
-	\vspace{6cm}
-	\item [(b)] Run a bivariate regression to test this hypothesis in \texttt{R} (include your code!).
+	\textbf{Null:} On average, there is no difference in new or repaired drinking water facilities between villages with and without the reservation policy (that is, $\beta_{1} = 0$). \\
+	\textbf{Alternative:} There is an average difference in new or repaired drinking water facilities between villages with and without the reservation policy ($\beta_{1} \neq 0$).\\
 	
-	\vspace{6cm}
-	\item [(c)] Interpret the coefficient estimate for reservation policy. 
+	\vspace{.1cm}
+	\item [(b)] Run a bivariate regression to test this hypothesis in \texttt{R} (include your code!).\\
+	\vspace{.2cm}
+	
+	Running the following code results in line $y = \beta_{0} + \beta_{1}*x$ with $\beta_{0} = 14.74$, $\beta_{1} = 9.25$, $R^2 = 0.0169$, and a p-value for $\beta_{1}$ of 0.0197 (plus, a plot for visualizing).
+		\lstinputlisting[language=R, firstline=137, lastline=143]{PS02_SVU.R}  
+		
+	\vspace{.1cm}
+	\item [(c)] Interpret the coefficient estimate for reservation policy. \\
+	\vspace{.2cm}
+	
+	Our estimated water drinking facilities (based on binary input variable of 0/1 for F/T regarding the use of the reservation policy) is modeled by $y = 14.74 + 9.25*x$. The intercept, 14.74 suggests that on average there were 14-15 new water drinking facilities in villages that did not reserve seats on the GP for women. This is in comparison to 23.99, or 24, the estimated number of new water facilities in villages with GP seats reserved for women. \\
+	
+	The significance of this difference is signaled by the p-value of $\beta_{1}$ being 0.0197 (less than $\alpha = 0.05$). This means we can reject the null hypothesis that there is no average difference in the number of new or repaired drinking water facilities between villages with and without the reservation policy.\\
+	
+	Still, it is notable that the $R^2$ value is rather small, suggesting that the model itself accounts for only 1.7\% of variation in the dataset.\\
+
 \end{enumerate}
 
-%\newpage
-%	\section*{Question 3 (30 points): Biology}
-%
-%There is a physiological cost of reproduction for fruit flies, such that it reduces the lifespan of female fruit flies.  Is there a similar cost to male fruit flies?  This dataset contains observations from five groups of 25 male fruit flies. The experiment tests if increased reproduction reduces longevity for male fruit flies. The five groups are: males forced to live alone, males assigned to live with one or eight newly pregnant females (non-receptive females), and males assigned to live with one or eight virgin females (interested females). The name of the data set is \texttt{fruitfly.csv}.\footnote{Partridge and Farquhar (1981).``Sexual Activity and the Lifespan of Male Fruitflies''. \textit{Nature}. 294, 580-581.}
-%	\vspace{1cm}
-%
-%\begin{tabular}{r|l}
-%	\texttt{No} & serial number (1-25) within each group of 25\\
-%	\texttt{type} & Type of experimental assignment \\
-%	& \hspace{0.1in} $1=$ no females  \\
-%	& \hspace{0.1in} $2=$ 1 newly pregnant female \\
-%	& \hspace{0.1in} $3=$ 8 newly pregnant females\\
-%	& \hspace{0.1in} $4=$ 1 virgin female\\
-%	& \hspace{0.1in} $5=$ 8 virgin females\\
-%	\texttt{lifespan} & lifespan (days)\\
-%	\texttt{thorax} & length of thorax (mm)\\
-%	\texttt{sleep} & percentage of each day spent sleeping\\
-%\end{tabular}
-%	\vspace{1cm}
-%\begin{enumerate}
-%	
-%	\item
-%	Import the data set and obtain summary statistiscs and examine the distribution of the overall lifespan of the fruitflies.  
-%
-%\newpage
-%	\item
-%	Plot \texttt{lifespan} vs \texttt{thorax}. Does it look like there is a linear relationship? Provide the plot. What is the correlation coefficient between these two variables?
-%		\vspace{6cm}
-%	\item
-%	Regress \texttt{lifespan} on \texttt{thorax}.  Interpret the slope of the fitted model.
-%			\vspace{6cm}
-%	\item
-%	Test for a significant linear relationship between  \texttt{lifespan} and \texttt{thorax}. Provide and interpret your results of your test.
-%	
-%\newpage
-%	\item
-%	
-%	Provide the 90\% confidence interval for the slope of the fitted model.
-%	
-%			\vspace{.5cm}
-%	\begin{itemize}
-%		\item
-%		Use the formula of confidence interval.		\vspace{.5cm}
-%		\item
-%		Use the function  \texttt{confint()}  in \texttt{R} .
-%	\end{itemize}
-%			\vspace{6cm}
-%	\item Use the \texttt{predict()} function in \texttt{R} to (1) predict an individual fruitfly's lifespan when \texttt{thorax}=0.8 and (2) the average \texttt{lifespan} of fruitflies when \texttt{thorax}=0.8 by the fitted model. This requires that you compute prediction and confidence intervals. What are the expected values of lifespan? What are the prediction and confidence intervals around the expected values? 
-%	
-%			\vspace{6cm}
-%	\item	For a sequence of \texttt{thorax} values, draw a plot with their fitted values for \texttt{lifespan}, as well as the prediction intervals and confidence intervals.
-%
-
-
-%\end{enumerate}
 \end{document}

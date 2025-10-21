@@ -75,7 +75,7 @@ exp_values <- c(ns_uc, ns_lc, br_uc, br_lc, gw_uc, gw_lc)
 chi_stat <- sum((tab_1 - exp_values)^2/exp_values)
 chi_stat
 
-chisq.test(tab_1)
+test <- chisq.test(tab_1)
 
 # Question 1.b
 
@@ -86,10 +86,11 @@ round(pchisq(chi_stat, df = 2, lower.tail = FALSE), 4)
 # Question 1.c
 
 exp_values
-obs_values <- as.vector(tab_1)
+obs_values <- tab_1
 obs_values
-
+# create a numerator
 num <- obs_values - exp_values
+num
 
 tab_1m
 
@@ -98,13 +99,21 @@ col_props <- 1-(colSums(tab_1)/gt)
 
 glimpse(row_props)
 
+row_props* col_props
 outer(row_props, col_props, "*")
 
+# create a denominator for adjusted residuals
 den <- sqrt(exp_values*(outer(row_props, col_props, "*")))
 
-residuals <- round(num/den, 3)
-residuals
+st_residuals <- round(num/sqrt(exp_values), 3)
+round(test$residuals, 3)
 
+adj_residuals <- round(num/den, 3)
+
+st_residuals
+adj_residuals
+
+?table
 # Question 1.d
 
 
@@ -114,17 +123,29 @@ residuals
 
 df <- read.csv("https://raw.githubusercontent.com/kosukeimai/qss/master/PREDICTION/women.csv")
 
-glimpse(df)
-glimpse(df[df$female == 1, ]$female)
-fem <- df[df$female == 1, ]$water
-fem
-
-
-corrplot(df, method = "pie")
-unique(df$GP)
-
 # Question 2.a
 
-# H0: 
+# H0: There is no difference in the average number of new or repaired drinking 
+# water facilities between groups with reservation policy and those without.
+# HA: there is an effect.
 
+# Questoin 2.b
 
+glimpse(df)
+rsq <- cor(df$reserved, df$water, method = "pearson")^2
+
+plot(df$reserved, df$water)
+line_1 <- lm(df$water ~ df$reserved)
+abline(line_1)
+summary(line_1)
+
+beta_0 <- line_1$coefficients[1]
+beta_1 <- line_1$coefficients[2]
+
+y <- function(x) {
+  as.numeric(beta_0 + beta_1*x)
+}
+y(0)  
+y(1)  
+  
+  
