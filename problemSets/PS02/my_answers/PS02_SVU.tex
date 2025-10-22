@@ -94,14 +94,14 @@
 
 	First, I recreated the above table in R:\\
 		\lstinputlisting[language=R, firstline=39, lastline=44]{PS02_SVU.R} 
-	Then, created vectors of the expected values and used them to calculate the $\chi^2$ test statistic. To ensure this calculation is correct, I compared it to the $\chi^2$ test statistic from the \texttt{chisq.test()} in R-- both yield a value of \textbf{3.79}.\\
+	Then, created vectors of the expected values given formula \(f_{E}\frac{(Row\ Total)\times (Column\ Total)}{Grand\ Total}\) and used them to calculate the $\chi^2$ test statistic. To ensure this calculation is correct, I compared it to the $\chi^2$ test statistic from the \texttt{chisq.test()} in R-- both yield a value of \textbf{3.79}.\\
 		\lstinputlisting[language=R, firstline=73, lastline=78]{PS02_SVU.R}  
 		
 	\item [(b)]
 	Now calculate the p-value from the test statistic you just created (in \texttt{R}).  What do you conclude if $\alpha = 0.1$?\\
 	\vspace{.1cm}
 	
-	Using \texttt{pchisq()} we can easily find that the p-value equals \textbf{0.1502}. At $\alpha = 0.1$, we cannot reject the null hypothesis and thus conclude that there may indeed be no statistical association between the two categorical variables (class and traffic stop outcome).\\
+	Using \texttt{pchisq()} we can easily find that the p-value equals \textbf{0.1502}. At $\alpha = 0.1$, p$>\alpha$, meaning we cannot reject the null hypothesis and thus conclude that there may indeed be no statistical association between the two categorical variables (class and traffic stop outcome).\\
 		\lstinputlisting[language=R, firstline=82, lastline=82]{PS02_SVU.R}  
 		
 	\item [(c)] Calculate the standardized residuals for each cell and put them in the table below.
@@ -152,8 +152,8 @@ Chattopadhyay and Duflo were interested in whether women promote different polic
 	\item [(a)] State a null and alternative (two-tailed) hypothesis. \\
 	\vspace{.2cm}
 	
-	\textbf{Null:} On average, there is no difference in new or repaired drinking water facilities between villages with and without the reservation policy (that is, $\beta_{1} = 0$). \\
-	\textbf{Alternative:} There is an average difference in new or repaired drinking water facilities between villages with and without the reservation policy ($\beta_{1} \neq 0$).\\
+	\textbf{Null:} On average, there is no difference in the number of new or repaired drinking water facilities between villages with and without the reservation policy (that is, $\beta_{1} = 0$). \\
+	\textbf{Alternative:} There is an average difference in the number of new or repaired drinking water facilities between villages with and without the reservation policy ($\beta_{1} \neq 0$).\\
 	
 	\vspace{.1cm}
 	\item [(b)] Run a bivariate regression to test this hypothesis in \texttt{R} (include your code!).\\
@@ -166,7 +166,7 @@ Chattopadhyay and Duflo were interested in whether women promote different polic
 	\item [(c)] Interpret the coefficient estimate for reservation policy. \\
 	\vspace{.2cm}
 	
-	Our estimated water drinking facilities (based on binary input variable of 0/1 for F/T regarding the use of the reservation policy) is modeled by $y = 14.74 + 9.25*x$. The intercept, 14.74 suggests that on average there were 14-15 new water drinking facilities in villages that did not reserve seats on the GP for women. This is in comparison to 23.99, or 24, the estimated number of new water facilities in villages with GP seats reserved for women. \\
+	Our estimated water drinking facilities (based on binary input variable of 0/1 for F/T regarding the use of the reservation policy) is modeled by $y = 14.74 + 9.25*x$. The intercept, 14.74 suggests that on average there were 14-15 new (or repaired) drinking water facilities in villages that did not reserve seats on the GP for women. This is in comparison to 23.99, or 24, the estimated number of new (or repaired) drinking water facilities in villages with GP seats reserved for women. \\
 	
 	The significance of this difference is signaled by the p-value of $\beta_{1}$ being 0.0197 (less than $\alpha = 0.05$). This means we can reject the null hypothesis that there is no average difference in the number of new or repaired drinking water facilities between villages with and without the reservation policy.\\
 	
