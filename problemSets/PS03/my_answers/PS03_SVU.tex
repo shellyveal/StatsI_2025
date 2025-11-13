@@ -75,9 +75,12 @@
 
 		\vspace{.25cm}
 	
-\noindent In this problem set, you will run several regressions and create an add variable plot (see the lecture slides) in \texttt{R} using the \texttt{incumbents\_subset.csv} dataset. Include all of your code.
+\noindent In this problem set, you will run several regressions and create an add variable plot (see the lecture slides) in \texttt{R} using the \texttt{incumbents\_subset.csv} dataset. Include all of your code.\\
+\vspace{.2cm}
 
-	\vspace{.5cm}
+\indent * Note: "Spending" variable,  \texttt{difflog}, is the difference in log of spending between incumbent and challenger.
+
+	\vspace{.2cm}
 \section*{Question 1}
 \vspace{.25cm}
 \noindent We are interested in knowing how the difference in campaign spending between incumbent and challenger affects the incumbent's vote share. 
@@ -124,7 +127,11 @@
 			\lstinputlisting[language=R, firstline=67, lastline=67]{PS03_SVU.R}  
 		\item Write the prediction equation.\vspace{.5cm}
 			\begin{center}
-				\(Y_{1} = \alpha_{1} + \beta_{1}X = 0.579 + 0.042X\) \\
+				\(\hat{Y} = \alpha_{1} + \beta_{1}X = 0.579 + 0.042X\) \\
+				
+				\vspace{.3cm}
+				
+				\(\widehat{\texttt{voteshare}} = 0.579 + 0.042\texttt{difflog}\)
 			\end{center}
 			\vspace{.25cm}
 		
@@ -180,7 +187,11 @@
 			\lstinputlisting[language=R, firstline=115, lastline=115]{PS03_SVU.R}  
 		\item Write the prediction equation.\\
 			\begin{center}
-				\(Y_{2} = \alpha_{2} + \beta_{2}X = 0.508 + 0.024X\) \\
+				\(\hat{Y} = \alpha_{2} + \beta_{2}X = 0.508 + 0.024X\) \\
+				
+				\vspace{.3cm}
+				
+				\(\widehat{\texttt{presvote}} = 0.508 + 0.024\texttt{difflog}\)
 		\vspace{.25cm}
 			\end{center}
 				In R:\\
@@ -235,7 +246,11 @@
 				\end{figure}
 		\item Write the prediction equation.
 			\begin{center}
-		\(Y_{3} = \alpha_{3} + \beta_{3}X = 0.441 + 0.388X\) \\
+		\(\hat{Y} = \alpha_{3} + \beta_{3}X = 0.441 + 0.388X\) \\
+		
+		\vspace{.3cm}
+		
+		\(\widehat{\texttt{voteshare}} = 0.441 + 0.388\texttt{presvote} \)
 			\end{center}
 		\vspace{.25cm}
 		
@@ -288,7 +303,11 @@
 			\end{figure}
 		\item Write the prediction equation.
 			\begin{center}
-				\(Y_{4} = \alpha_{4} + \beta_{4}X = -1.942\times10^{-18} + 0.388X\) \\
+				\(\hat{Y} = \alpha_{4} + \beta_{4}X = -1.942\times10^{-18} + 0.388X\) \\
+				
+				\vspace{.3cm}
+				
+				\(\widehat{\texttt{residuals RL 1}} = -1.942\times10^{-18} + 0.388\texttt{residuals RL 2}\)
 			\end{center}
 		\vspace{.25cm}
 		
@@ -338,7 +357,11 @@
 		\end{table}
 		\item Write the prediction equation.	\vspace{.1cm}
 			\begin{center}
-				\(Y_{5} = \alpha_{5} + \beta_{difflog}X_{difflog} + \beta_{presvote}X+_{presvote} = 0.449 + 0.036X_{difflog} + 0.257X_{presvote}\) \\
+				\(\hat{Y} = \alpha_{5} + \beta_{difflog}X_{difflog} + \beta_{presvote}X+_{presvote} = 0.449 + 0.036X_{difflog} + 0.257X_{presvote}\) \\
+				
+				\vspace{.3cm}
+				
+				\(\widehat{\texttt{voteshare}} = 0.449 + 0.036\texttt{difflog} + 0.257\texttt{presvote}\)
 			\end{center}
 		\vspace{.25cm}
 		
