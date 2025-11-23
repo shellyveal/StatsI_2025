@@ -44,12 +44,17 @@ df <- Prestige[!is.na(Prestige$type), ]
 df$professional <- ifelse(df$type == "prof", 1, 0) 
 
 view(df)
-
+summary(df$prestige)
 ## - 1b - ##
 plot_income <- ggplot(df, aes(x = income,
-                              y = prestige)) +
+                              y = prestige,
+                              color = factor(professional))) +
   geom_point() +
-  geom_smooth(method = "lm", se = FALSE) +
+  geom_smooth(aes(group = professional), 
+              method = "lm", 
+              se = FALSE, 
+              fullrange = TRUE) +
+  scale_color_manual(values = c("0" = "red", "1" = "green")) +
   labs(x = "Income ($)",
        y = "Prestige") +
   ylim(0, 100)
@@ -69,36 +74,63 @@ plot_prof
 ggsave("plot_2.pdf", plot = plot_prof, width = 10, height = 6,
        units = "in", dpi = 300)
 
-inc_prof <- lm(df$prestige ~ df$income + df$professional)
+inc_prof <- lm(df$prestige ~ df$income + df$professional + df$income:df$professional)
 summary(inc_prof)
 stargazer(inc_prof, 
           type = "latex",
           title = "Impact of Income and Professionality on Prestige",
-          covariate.labels = c("Income", "Professional"),
+          covariate.labels = c("Income", "Professional", "Interaction"),
           dep.var.labels = "Prestige")
 
-
-
+# line verification plot
+plot_w_lines <- ggplot(df, aes(x = income,
+                              y = prestige,
+                              color = factor(professional))) +
+  geom_point() +
+  geom_smooth(aes(group = professional), 
+              method = "lm", 
+              se = FALSE, 
+              fullrange = TRUE) +
+  scale_color_manual(values = c("0" = "red", "1" = "green")) +
+  labs(x = "Income ($)",
+       y = "Prestige") +
+  ylim(0, 100) +
+  geom_abline(intercept = 21.142, 
+              slope = 0.00317,
+              color = "darkred") +
+  geom_abline(intercept = 58.923,
+              slope = 0.00084,
+              color = "darkgreen")
+plot_w_lines
+ggsave("plot_2.pdf", plot = plot_w_lines, width = 10, height = 6,
+       units = "in", dpi = 300)
 
 ## - 1c - ##
-# df$prestige = 30.618 + 1.371e-03(df$income) + 22.756(df$professional)
-30.618 + 1.371*9 + 22.756
+# df$prestige = 21.142 + 0.00317(df$income) + 37.781(df$professional) - 0.00233(df$income*df$professional)
+co_inc_prof <- inc_prof$coefficients
+b0 <- co_inc_prof[1]
+b1 <- co_inc_prof[2]
+b2 <- co_inc_prof[3]
+b3 <- co_inc_prof[4]
+
+f <- function(x,z) {
+  result <- b0 + b1*x + b2*z + b3*x*z
+  return(result)
+}
 
 ## - 1d - ##
 # see latex/pdf
 ## - 1e - ##
 # see latex/pdf
 ## - 1f - ##
-co_inc_prof <- inc_prof$coefficients
-slope_inc <- co_inc_prof[2]
-
-ans_1f <- slope_inc*1000
+ans_1f <- f(11000, 1) - f(10000, 1)
 ans_1f
 
+b1 + b3
+
 ## - 1g - ##
-slope_prof <- co_inc_prof[3]
-ans_1g <- slope_prof
-ans_1g
+ans1g <- f(6000, 1) - f(6000, 0)
+ans1g
 
 # note - the question is phrased poorly for the data:
 # really what we're finding here is the difference of prestige for
@@ -125,13 +157,13 @@ r_squared <- 0.094
 
 # H0: assigned = 0,  HA: assigned != 0
 t_assigned <- (assigned - 0)/se_assigned
-p_assigned <- 2*pt(abs(t_assigned), n_total-2, lower.tail = FALSE)
+p_assigned <- 2*pt(abs(t_assigned), n_total-3, lower.tail = FALSE)
 p_assigned
 
 ## 2b ##
 # H0: adjacent = 0,  HA: adjacent != 0
 t_adjacent <- (adjacent - 0)/se_adjacent
-p_adjacent <- 2*pt(abs(t_adjacent), n_total-2, lower.tail = FALSE)
+p_adjacent <- 2*pt(abs(t_adjacent), n_total-3, lower.tail = FALSE)
 p_adjacent
 
 ## 2c ##

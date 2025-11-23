@@ -107,75 +107,67 @@ help(Prestige)
 	\item [(b)]
 	Run a linear model with \texttt{prestige} as an outcome and \texttt{income}, \texttt{professional}, and the interaction of the two as predictors (Note: this is a continuous $\times$ dummy interaction.)\\
 	\vspace{.1cm}
-		\lstinputlisting[language=R, firstline=72, lastline=72]{PS04_SVU.R} 
+		\lstinputlisting[language=R, firstline=77, lastline=77]{PS04_SVU.R} 
 	\vspace{.2cm}
-	\begin{table}[!htbp] \centering 
-		\caption{Impact of Income and Professionality on Prestige} 
-		\label{} 
-		\begin{tabular}{@{\extracolsep{5pt}}lc} 
-			\\[-1.8ex]\hline 
-			\hline \\[-1.8ex] 
-			& \multicolumn{1}{c}{\textit{Dependent variable:}} \\ 
-			\cline{2-2} 
-			\\[-1.8ex] & Prestige \\ 
-			\hline \\[-1.8ex] 
-			Income & 0.001$^{***}$ \\ 
-			& (0.0003) \\ 
-			& \\ 
-			Professional & 22.757$^{***}$ \\ 
-			& (2.318) \\ 
-			& \\ 
-			Constant & 30.618$^{***}$ \\ 
-			& (1.714) \\ 
-			& \\ 
-			\hline \\[-1.8ex] 
-			Observations & 98 \\ 
-			R$^{2}$ & 0.749 \\ 
-			Adjusted R$^{2}$ & 0.744 \\ 
-			Residual Std. Error & 8.652 (df = 95) \\ 
-			F Statistic & 141.836$^{***}$ (df = 2; 95) \\ 
-			\hline 
-			\hline \\[-1.8ex] 
-			\textit{Note:}  & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-		\end{tabular} 
-	\end{table}
-	For extra verification of these linear regression results, see visualizations below:
-	\begin{figure}
-		\centering
-		\begin{minipage}{.5\textwidth}
-			\centering
-			\includegraphics[width=1\linewidth]{plot_1.pdf}
-			\captionof{figure}{Income vs Prestige}
-			\label{fig:test1}
-		\end{minipage}%
-		\begin{minipage}{.5\textwidth}
-			\centering
-			\includegraphics[width=1\linewidth]{plot_2.pdf}
-			\captionof{figure}{Non-Professional/Professional vs Prestige}
-			\label{fig:test2}
-		\end{minipage}
+\begin{table}[!htbp] \centering 
+	\caption{Impact of Income and Professionality on Prestige} 
+	\label{} 
+	\begin{tabular}{@{\extracolsep{5pt}}lc} 
+		\\[-1.8ex]\hline 
+		\hline \\[-1.8ex] 
+		& \multicolumn{1}{c}{\textit{Dependent variable:}} \\ 
+		\cline{2-2} 
+		\\[-1.8ex] & Prestige \\ 
+		\hline \\[-1.8ex] 
+		Income & 0.003$^{***}$ \\ 
+		& (0.0005) \\ 
+		& \\ 
+		Professional & 37.781$^{***}$ \\ 
+		& (4.248) \\ 
+		& \\ 
+		Interaction & $-$0.002$^{***}$ \\ 
+		& (0.001) \\ 
+		& \\ 
+		Constant & 21.142$^{***}$ \\ 
+		& (2.804) \\ 
+		& \\ 
+		\hline \\[-1.8ex] 
+		Observations & 98 \\ 
+		R$^{2}$ & 0.787 \\ 
+		Adjusted R$^{2}$ & 0.780 \\ 
+		Residual Std. Error & 8.012 (df = 94) \\ 
+		F Statistic & 115.878$^{***}$ (df = 3; 94) \\ 
+		\hline 
+		\hline \\[-1.8ex] 
+		\textit{Note:}  & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+	\end{tabular} 
+\end{table}
+\noindent For visual verification of these impacts see plot below, noting that the slope of the red line is equal to 0.00317 ($\beta{1}$), and the green line slope is equal to 0.000845 ($\beta_{1} - \beta_{3}$):\\
+	\begin{figure}[h!]\centering
+		\caption{\footnotesize Income vs Prestige.}
+		\label{fig:plot_1}
+		\includegraphics[width=.85\textwidth]{plot_1.pdf}
 	\end{figure}
-	
 \newpage
 	\item [(c)]
 	Write the prediction equation based on the result.\\
 	
 	\vspace{.08cm}
-		\(\widehat{\texttt{prestige}} = 30.618 + 0.00137\texttt{income} + 22.757\texttt{professional}\)
+		\(\widehat{\texttt{prestige}} = 21.142 + 0.00317\texttt{income} + 37.781\texttt{professional} - 0.00233\texttt{income*professional}\)
 	\vspace{.1cm}
 	
 	\item [(d)]
 	Interpret the coefficient for \texttt{income}.\\
 	
 	\vspace{.1cm}
-		Income's coefficient (0.00137) is rather small, but this makes sense given that income is measured in dollars. Interpreting it as is, a one-dollar gain in income results in an increase of 0.00137 points on the prestige scale, holding professionality constant. It is worth noting, however, that a significant change in income would be in the hundreds if not thousands of dollars, as we will explore in item f. Seen below, a significant increase (\$1,000) in income results in a 1.37 point gain on the prestige scale. \\
+		Income's coefficient (0.00317) is rather small, but this makes sense given that income is measured in dollars. Interpreting it as is, a one-dollar gain in income results in an increase of 0.00317 points on the prestige scale, holding professionality at 0. It is worth noting, however, that a significant change in income would be in the hundreds if not thousands of dollars, as we will explore in item f. \\
 	\vspace{.1cm}
 
 	\item [(e)]
 	Interpret the coefficient for \texttt{professional}.\\
 	
 	\vspace{.1cm}
-		Professional's coefficient, 22.757, is much larger than income's coefficient, and it being a dummy variable for professionality (as opposed to white or blue collar) means we interpret it as follows: professional jobs enjoy 22.757 points more, on average, in prestige compared to white or blue collar jobs when holding income constant. \\
+		Professional's coefficient, 37.781, is much larger than income's coefficient, and it being a dummy variable for professionality (as opposed to white or blue collar) means we interpret it as follows: professional jobs enjoy 37.781 points more, on average, in prestige compared to white or blue collar jobs when holding income constant. \\
 	\vspace{.1cm}
 	
 	\newpage
@@ -183,14 +175,14 @@ help(Prestige)
 	What is the effect of a \$1,000 increase in income on prestige score for professional occupations? In other words, we are interested in the marginal effect of income when the variable \texttt{professional} takes the value of $1$. Calculate the change in $\hat{y}$ associated with a \$1,000 increase in income based on your answer for (c).\\
 
 	\vspace{.1cm}
-		A \$1,000 increase in income for professional occupations (or for non-professional occupations, for that matter) will result in a 1.37 point gain on the prestige scale, given the coefficient for \texttt{income}: 0.00137. For example, professionals with an income of \$8,000 enjoy a prestige score of approximately 64.34. A \$1,000 increase in income would move them to a prestige score of approximately 65.71 \\
+		A \$1,000 increase in income for professional occupations will, on average, result in a 0.845 point gain on the prestige scale. For example, professionals with an income of \$10,000 enjoy a prestige score of approximately 67.323. A \$1,000 increase in income would move them to a prestige score of approximately 68.163 \\
 	\vspace{.1cm}
 	
 	\item [(g)]
 	What is the effect of changing one's occupations from non-professional to professional when her income is \$6,000? We are interested in the marginal effect of professional jobs when the variable \texttt{income} takes the value of $6,000$. Calculate the change in $\hat{y}$ based on your answer for (c).\\
 	
 	\vspace{.1cm}
-		It's first noticeable here that the question phrasing is a bit odd given the data -- one wouldn't magically change their profession and hold their income constant. Holding income constant (at \$6,000 in this case) really shows us how people in different profession types receive different prestige scores even if their income is the same. As such, professionals on average enjoy 22.757 more points on the prestige scale than their white collar or blue collar counterparts who earn the same income. This is true at the income level \$6,000 just the same as it is at the income level \$10,000 or \$20,000 given the linearity of our model.\\
+		It's first noticeable here that the question phrasing is a bit odd given the data -- one wouldn't magically change their profession and hold their income constant. Holding income at \$6,000 really shows us how people in different profession types receive different prestige scores even if their income is the same. As such, professionals earning \$6,000 on average enjoy 23.827 more points on the prestige scale than their white collar or blue collar counterparts who earn the same income.\\
 			
 	\vspace{.1cm}
 	
@@ -231,14 +223,14 @@ a precinct that was adjacent to a precinct in the treatment group (since people 
 	\vspace{.05cm}
 		\begin{center}
 			\(t_{assigned} = \frac{0.042 - 0}{0.016} = 2.625\) \\
-			Yields p-value of 0.00971\\
+			Yields p-value of 0.00972\\
 		\vspace{.05cm}
 		\end{center}
 	\newpage
 	In R:\\
-			\lstinputlisting[language=R, firstline=112, lastline=128]{PS04_SVU.R} 
+			\lstinputlisting[language=R, firstline=144, lastline=160]{PS04_SVU.R} 
 	\vspace{.03cm}		
-	With $\alpha = .05$, a p-value of 0.00971 indicates significance, suggesting that vote share \textbf{is} impacted by the postage of signs in voting precincts.\\
+	With $\alpha = .05$, a p-value of 0.00972 indicates significance, suggesting that vote share \textbf{is} impacted by the postage of signs in voting precincts. In other words, there is a significant difference between the reference category (no signage, not adjacent to signed precincts) and this category (signage posted). \\
 	
 	\item [(b)]  Use the results to determine whether being
 	next to precincts with these yard signs affects vote
@@ -250,13 +242,13 @@ a precinct that was adjacent to a precinct in the treatment group (since people 
 		\vspace{.05cm}
 		\end{center}
 	In R:\\
-	\lstinputlisting[language=R, firstline=132, lastline=134]{PS04_SVU.R} 
+	\lstinputlisting[language=R, firstline=164, lastline=166]{PS04_SVU.R} 
 	\vspace{.03cm}		
 	With $\alpha = .05$, a p-value of 0.00157 indicates significance, suggesting that vote share \textbf{is} affected by adjacence to precincts with signs posted.\\
 	\item [(c)] Interpret the coefficient for the constant term substantively.\\
 	
 	\vspace{.05cm}
-		The constant term coefficient, 0.302, indicates our estimated proportion of the vote for precincts without interaction with the signs posted (not having signs posted, and not being adjacent to precincts with posted signs). This suggests that Cuccinelli is receiving, on average, 30 percent of the vote share in precincts without the influence of the signage.\\
+		The constant term coefficient, 0.302, indicates our estimated proportion of the vote for precincts without interaction with the signs posted (not having signs posted, and not being adjacent to precincts with posted signs -- our reference category). This suggests that Cuccinelli is receiving, on average, 30 percent of the vote share in precincts without the influence of the signage.\\
 	\vspace{.05cm}
 	\item [(d)] Evaluate the model fit for this regression.  What does this	tell us about the importance of yard signs versus other factors that are not modeled?
 	
