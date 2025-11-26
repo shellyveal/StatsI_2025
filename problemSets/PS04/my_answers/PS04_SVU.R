@@ -54,9 +54,11 @@ plot_income <- ggplot(df, aes(x = income,
               method = "lm", 
               se = FALSE, 
               fullrange = TRUE) +
-  scale_color_manual(values = c("0" = "red", "1" = "green")) +
+  scale_color_manual(values = c("0" = "black", "1" = "seagreen"),
+                     labels = c("white/blue collar", "professional")) +
   labs(x = "Income ($)",
-       y = "Prestige") +
+       y = "Prestige",
+       color = "Professionality") +
   ylim(0, 100)
 plot_income
 ggsave("plot_1.pdf", plot = plot_income, width = 10, height = 6,
@@ -91,20 +93,19 @@ plot_w_lines <- ggplot(df, aes(x = income,
               method = "lm", 
               se = FALSE, 
               fullrange = TRUE) +
-  scale_color_manual(values = c("0" = "red", "1" = "green")) +
+  scale_color_manual(values = c("0" = "black", "1" = "seagreen")) +
   labs(x = "Income ($)",
        y = "Prestige") +
   ylim(0, 100) +
   geom_abline(intercept = 21.142, 
               slope = 0.00317,
-              color = "darkred") +
+              color = "darkgrey") +
   geom_abline(intercept = 58.923,
               slope = 0.00084,
               color = "darkgreen")
 plot_w_lines
 ggsave("plot_2.pdf", plot = plot_w_lines, width = 10, height = 6,
        units = "in", dpi = 300)
-
 ## - 1c - ##
 # df$prestige = 21.142 + 0.00317(df$income) + 37.781(df$professional) - 0.00233(df$income*df$professional)
 co_inc_prof <- inc_prof$coefficients
