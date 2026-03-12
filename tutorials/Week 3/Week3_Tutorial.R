@@ -123,8 +123,8 @@ se_income <- sd(df$income) / sqrt(length(df$income))
 # 95% of observations lie within ±1.96 (approx. 2)
 # standard errors of the point estimate
 
-lower_95 <- # your answer here 
-upper_95 <- # your answer here
+lower_95 <- mean_income - 1.96*se_income
+upper_95 <- mean_income + 1.96*se_income
 
 lower_95
 mean_income
@@ -216,14 +216,15 @@ abline(v = c(z99_lower, z99_upper), col = "red", lty = 2, lwd = 1) # 99%
 abline(v = c(t95_lower, t95_upper), col = "blue", lty = 1, lwd = 2) # 95%
 abline(v = c(lower_99_t, upper_99_t), col = "blue", lty = 1, lwd = 1) # 99%
 
-legend("topright",
+legend(x = 2800, y = 6.5,
        legend = c("Mean",
                   "Z 95% CI", "Z 99% CI",
                   "t 95% CI", "t 99% CI"),
        col    = c("black","red","red","blue","blue"),
        lty    = c(1,2,2,1,1),
        lwd    = c(2,2,1,2,1),
-       bty    = "n")
+       bty    = "n",
+       y.intersp = .2)
 
 # -------------------------------#
 # 6. Correlation
@@ -234,21 +235,24 @@ legend("topright",
 # Scatter plot 
 plot(df$income,df$edu)
 plot(df$income,df$edu,
-     col=df$cap+1) # Color over third variable (+1, because first color in R is white)
+     col=df$cap+3) # Color over third variable (+1, because first color in R is white)
 
 # Improve visualization and save
 png(file="scatter_plot.png")
 plot(df$income,
      df$edu,
-     col=df$cap+1,
+     col=df$cap+3,
      xlab="Monthly net income (in Euro)",
      ylab="University level education (in years)",
      main="The relationship between education and income")
 # Add legend
-legend(1000, 8, # x and y position of legend
+legend(x = 1000, y = 8, # x and y position of legend
        legend=c("Non capital", "Capital"),
-       col=c("black","red"),
-       pch=1) # Marker type (1 is default)
+       col=c(3,4),
+       pch=1,
+       cex = 1,
+       bty = "n",
+       y.intersp = .1) # Marker type (1 is default)
 dev.off()
 
 # Boxplot
@@ -302,8 +306,8 @@ ggplot(df, aes(x = factor(cap), y = income, fill = factor(cap))) +
 
 # Hypotheses: one or two-sided? 
 # Answer: two-sided
-#   H0: Average monthly income is 3034 (mu is not equal to 3034)
-#   H1: Average monthly income is not 3034 (mu = 3034)
+#   H0: Average monthly income is 3034 (mu = 3034)
+#   H1: Average monthly income is not 3034 (mu != 3034)
 
 # The t-test compares the sample mean to the hypothesized value mu0,
 # accounting for sample size and variability.
@@ -399,21 +403,23 @@ west <- data$fh_polity2[data$region == "Western Europe and North America"]
 east <- data$fh_polity2[data$region == "Eastern Europe"]
   
 # Quick descriptive statistics - careful for missing values! 
-mean_west <- # your answer here
-mean_east <- # your answer here
-n_west    <- # your answer here
-n_east    <- # your answer here
-sd_west   <- # your answer here
-sd_east   <- # your answer here
+mean_west <- mean(west)
+mean_east <- mean(east)
+n_west    <- length(west) - length(west[is.na(west)])
+n_east    <- length(east) - length(east[is.na(east)])
+sd_west   <- sd(west)
+sd_east   <- sd(east)
 
 mean_west; mean_east
 n_west; n_east
 sd_west; sd_east
 
+
+
 # Calculate the SEs
 # SE = sample SD / sqrt(n)
-se_west <- # your answer here
-se_east <- # your answer here
+se_west <- sd_west/sqrt(n_west)
+se_east <- sd_east/sqrt(n_east)
 
 se_west; se_east
 
@@ -448,5 +454,5 @@ t_test_res
 ci_t <- t_test_res$conf.int[1:2]
 ci_t
 
-# Conclusion?
+# Reject null that there is no difference between the two regions
 

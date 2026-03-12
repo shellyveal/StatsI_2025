@@ -197,7 +197,7 @@ ggplot(df_clt, aes(x = mean, fill = n)) +
 
 # Income, for example, is usually not really normally distributed.
 # First, we generate some hypothetical income data.
-
+options(scipen = 999)
 income <- rgamma(1000, shape = 1.1, scale = 2000) 
 summary(income)
 var(income)
